@@ -1,6 +1,7 @@
-import strictUriEncode from 'strict-uri-encode';
-import decodeComponent from 'decode-uri-component';
-import splitOnFirst from 'split-on-first';
+'use strict';
+const strictUriEncode = require('strict-uri-encode');
+const decodeComponent = require('decode-uri-component');
+const splitOnFirst = require('split-on-first');
 
 function encoderForArrayFormat(options) {
 	switch (options.arrayFormat) {
@@ -106,7 +107,7 @@ function parserForArrayFormat(options) {
 		case 'comma':
 		case 'separator':
 			return (key, value, accumulator) => {
-				const isArray = typeof value === 'string' && value.split('').includes(options.arrayFormatSeparator);
+				const isArray = typeof value === 'string' && value.split('').indexOf(options.arrayFormatSeparator) > -1;
 				const newValue = isArray ? value.split(options.arrayFormatSeparator).map(item => decode(item, options)) : value === null ? value : decode(value, options);
 				accumulator[key] = newValue;
 			};
@@ -188,10 +189,10 @@ function extract(input) {
 	return input.slice(queryStart + 1);
 }
 
-function parseValue(value, {parseNumbers, parseBooleans}) {
-	if (parseNumbers && !Number.isNaN(Number(value)) && (typeof value === 'string' && value.trim() !== '')) {
+function parseValue(value, options) {
+	if (options.parseNumbers && !Number.isNaN(Number(value)) && (typeof value === 'string' && value.trim() !== '')) {
 		value = Number(value);
-	} else if (parseBooleans && value !== null && (value.toLowerCase() === 'true' || value.toLowerCase() === 'false')) {
+	} else if (options.parseBooleans && value !== null && (value.toLowerCase() === 'true' || value.toLowerCase() === 'false')) {
 		value = value.toLowerCase() === 'true';
 	}
 
@@ -262,7 +263,10 @@ function parse(input, options) {
 	}, Object.create(null));
 }
 
-function stringify(object, options) {
+exports.extract = extract;
+exports.parse = parse;
+
+exports.stringify = (object, options) => {
 	if (!object) {
 		return '';
 	}
@@ -310,29 +314,27 @@ function stringify(object, options) {
 				.join('&');
 		}
 
-		return `${encode(key, options)}=${encode(value, options)}`;
-	}).filter(({length}) => length > 0).join('&');
-}
+		return encode(key, options) + '=' + encode(value, options);
+	}).filter(x => x.length > 0).join('&');
+};
 
-function parseUrl(input, options) {
+exports.parseUrl = (input, options) => {
 	return {
 		url: removeHash(input).split('?')[0] || '',
 		query: parse(extract(input), options)
 	};
-}
+};
 
-function stringifyUrl(input, options) {
+exports.stringifyUrl = (input, options) => {
 	const url = removeHash(input.url).split('?')[0] || '';
-	const queryFromUrl = extract(input.url);
-	const parsedQueryFromUrl = parse(queryFromUrl);
+	const queryFromUrl = exports.extract(input.url);
+	const parsedQueryFromUrl = exports.parse(queryFromUrl);
 	const hash = getHash(input.url);
 	const query = Object.assign(parsedQueryFromUrl, input.query);
-	let queryString = stringify(query, options);
+	let queryString = exports.stringify(query, options);
 	if (queryString) {
 		queryString = `?${queryString}`;
 	}
 
 	return `${url}${queryString}${hash}`;
-}
-
-export {extract, parse, stringify, parseUrl, stringifyUrl};
+};

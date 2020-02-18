@@ -31,10 +31,13 @@
 
 <br>
 
+## Why
+It is a fork of original [query-strings](https://github.com/sindresorhus/query-string) package for the purpose of providing ES module version
+
 ## Install
 
 ```
-$ npm install query-string
+$ npm install @fusionstrings/query-string
 ```
 
 This module targets Node.js 6 or later and the latest version of Chrome, Firefox, and Safari. If you want support for older browsers, or, if your project is using create-react-app v1, use version 5: `npm install query-string@5`.
@@ -43,25 +46,27 @@ This module targets Node.js 6 or later and the latest version of Chrome, Firefox
 
 ```js
 const queryString = require('query-string');
+//or
+import * as queryString from 'query-string';
 
 console.log(location.search);
 //=> '?foo=bar'
 
-const parsed = queryString.parse(location.search);
+const parsed = parse(location.search);
 console.log(parsed);
 //=> {foo: 'bar'}
 
 console.log(location.hash);
 //=> '#token=bada55cafe'
 
-const parsedHash = queryString.parse(location.hash);
+const parsedHash = parse(location.hash);
 console.log(parsedHash);
 //=> {token: 'bada55cafe'}
 
 parsed.foo = 'unicorn';
 parsed.ilike = 'pizza';
 
-const stringified = queryString.stringify(parsed);
+const stringified = stringify(parsed);
 //=> 'foo=unicorn&ilike=pizza'
 
 location.search = stringified;
@@ -99,7 +104,7 @@ Default: `'none'`
 ```js
 const queryString = require('query-string');
 
-queryString.parse('foo[]=1&foo[]=2&foo[]=3', {arrayFormat: 'bracket'});
+parse('foo[]=1&foo[]=2&foo[]=3', {arrayFormat: 'bracket'});
 //=> {foo: ['1', '2', '3']}
 ```
 
@@ -108,7 +113,7 @@ queryString.parse('foo[]=1&foo[]=2&foo[]=3', {arrayFormat: 'bracket'});
 ```js
 const queryString = require('query-string');
 
-queryString.parse('foo[0]=1&foo[1]=2&foo[3]=3', {arrayFormat: 'index'});
+parse('foo[0]=1&foo[1]=2&foo[3]=3', {arrayFormat: 'index'});
 //=> {foo: ['1', '2', '3']}
 ```
 
@@ -117,7 +122,7 @@ queryString.parse('foo[0]=1&foo[1]=2&foo[3]=3', {arrayFormat: 'index'});
 ```js
 const queryString = require('query-string');
 
-queryString.parse('foo=1,2,3', {arrayFormat: 'comma'});
+parse('foo=1,2,3', {arrayFormat: 'comma'});
 //=> {foo: ['1', '2', '3']}
 ```
 
@@ -126,7 +131,7 @@ queryString.parse('foo=1,2,3', {arrayFormat: 'comma'});
 ```js
 const queryString = require('query-string');
 
-queryString.parse('foo=1|2|3', {arrayFormat: 'separator', arrayFormatSeparator: '|'});
+parse('foo=1|2|3', {arrayFormat: 'separator', arrayFormatSeparator: '|'});
 //=> {foo: ['1', '2', '3']}
 ```
 
@@ -135,7 +140,7 @@ queryString.parse('foo=1|2|3', {arrayFormat: 'separator', arrayFormatSeparator: 
 ```js
 const queryString = require('query-string');
 
-queryString.parse('foo=1&foo=2&foo=3');
+parse('foo=1&foo=2&foo=3');
 //=> {foo: ['1', '2', '3']}
 ```
 
@@ -161,7 +166,7 @@ Default: `false`
 ```js
 const queryString = require('query-string');
 
-queryString.parse('foo=1', {parseNumbers: true});
+parse('foo=1', {parseNumbers: true});
 //=> {foo: 1}
 ```
 
@@ -175,7 +180,7 @@ Default: `false`
 ```js
 const queryString = require('query-string');
 
-queryString.parse('foo=true', {parseBooleans: true});
+parse('foo=true', {parseBooleans: true});
 //=> {foo: true}
 ```
 
@@ -213,7 +218,7 @@ Default: `'none'`
 ```js
 const queryString = require('query-string');
 
-queryString.stringify({foo: [1, 2, 3]}, {arrayFormat: 'bracket'});
+stringify({foo: [1, 2, 3]}, {arrayFormat: 'bracket'});
 //=> 'foo[]=1&foo[]=2&foo[]=3'
 ```
 
@@ -222,7 +227,7 @@ queryString.stringify({foo: [1, 2, 3]}, {arrayFormat: 'bracket'});
 ```js
 const queryString = require('query-string');
 
-queryString.stringify({foo: [1, 2, 3]}, {arrayFormat: 'index'});
+stringify({foo: [1, 2, 3]}, {arrayFormat: 'index'});
 //=> 'foo[0]=1&foo[1]=2&foo[2]=3'
 ```
 
@@ -231,7 +236,7 @@ queryString.stringify({foo: [1, 2, 3]}, {arrayFormat: 'index'});
 ```js
 const queryString = require('query-string');
 
-queryString.stringify({foo: [1, 2, 3]}, {arrayFormat: 'comma'});
+stringify({foo: [1, 2, 3]}, {arrayFormat: 'comma'});
 //=> 'foo=1,2,3'
 ```
 
@@ -240,7 +245,7 @@ queryString.stringify({foo: [1, 2, 3]}, {arrayFormat: 'comma'});
 ```js
 const queryString = require('query-string');
 
-queryString.stringify({foo: [1, 2, 3]});
+stringify({foo: [1, 2, 3]});
 //=> 'foo=1&foo=2&foo=3'
 ```
 
@@ -262,7 +267,7 @@ const queryString = require('query-string');
 
 const order = ['c', 'a', 'b'];
 
-queryString.stringify({a: 1, b: 2, c: 3}, {
+stringify({a: 1, b: 2, c: 3}, {
 	sort: (a, b) => order.indexOf(a) - order.indexOf(b)
 });
 //=> 'c=3&a=1&b=2'
@@ -271,7 +276,7 @@ queryString.stringify({a: 1, b: 2, c: 3}, {
 ```js
 const queryString = require('query-string');
 
-queryString.stringify({b: 1, c: 2, a: 3}, {sort: false});
+stringify({b: 1, c: 2, a: 3}, {sort: false});
 //=> 'b=1&c=2&a=3'
 ```
 
@@ -289,7 +294,7 @@ Default: `false`
 ```js
 const queryString = require('query-string');
 
-queryString.stringify({a: 1, b: undefined, c: null, d: 4}, {
+stringify({a: 1, b: undefined, c: null, d: 4}, {
 	skipNull: true
 });
 //=> 'a=1&d=4'
@@ -298,7 +303,7 @@ queryString.stringify({a: 1, b: undefined, c: null, d: 4}, {
 ```js
 const queryString = require('query-string');
 
-queryString.stringify({a: undefined, b: null}, {
+stringify({a: undefined, b: null}, {
 	skipNull: true
 });
 //=> ''
@@ -321,7 +326,7 @@ Returns an object with a `url` and `query` property.
 ```js
 const queryString = require('query-string');
 
-queryString.parseUrl('https://foo.bar?foo=bar');
+parseUrl('https://foo.bar?foo=bar');
 //=> {url: 'https://foo.bar', query: {foo: 'bar'}}
 ```
 
@@ -336,10 +341,10 @@ Returns a string with the URL and a query string.
 Query items in the `query` property overrides queries in the `url` property.
 
 ```js
-queryString.stringifyUrl({url: 'https://foo.bar', query: {foo: 'bar'}});
+stringifyUrl({url: 'https://foo.bar', query: {foo: 'bar'}});
 //=> 'https://foo.bar?foo=bar'
 
-queryString.stringifyUrl({url: 'https://foo.bar?foo=baz', query: {foo: 'bar'}});
+stringifyUrl({url: 'https://foo.bar?foo=baz', query: {foo: 'bar'}});
 //=> 'https://foo.bar?foo=bar'
 ```
 
@@ -368,7 +373,7 @@ You're much better off just converting the object to a JSON string:
 ```js
 const queryString = require('query-string');
 
-queryString.stringify({
+stringify({
 	foo: 'bar',
 	nested: JSON.stringify({
 		unicorn: 'cake'
@@ -382,10 +387,10 @@ However, there is support for multiple instances of the same key:
 ```js
 const queryString = require('query-string');
 
-queryString.parse('likes=cake&name=bob&likes=icecream');
+parse('likes=cake&name=bob&likes=icecream');
 //=> {likes: ['cake', 'icecream'], name: 'bob'}
 
-queryString.stringify({color: ['taupe', 'chartreuse'], id: '515'});
+stringify({color: ['taupe', 'chartreuse'], id: '515'});
 //=> 'color=taupe&color=chartreuse&id=515'
 ```
 
@@ -396,13 +401,13 @@ Sometimes you want to unset a key, or maybe just make it present without assigni
 ```js
 const queryString = require('query-string');
 
-queryString.stringify({foo: false});
+stringify({foo: false});
 //=> 'foo=false'
 
-queryString.stringify({foo: null});
+stringify({foo: null});
 //=> 'foo'
 
-queryString.stringify({foo: undefined});
+stringify({foo: undefined});
 //=> ''
 ```
 

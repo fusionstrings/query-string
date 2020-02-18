@@ -14,7 +14,7 @@ export interface ParseOptions {
 		```
 		import queryString = require('query-string');
 
-		queryString.parse('foo[]=1&foo[]=2&foo[]=3', {arrayFormat: 'bracket'});
+		parse('foo[]=1&foo[]=2&foo[]=3', {arrayFormat: 'bracket'});
 		//=> {foo: ['1', '2', '3']}
 		```
 
@@ -23,7 +23,7 @@ export interface ParseOptions {
 		```
 		import queryString = require('query-string');
 
-		queryString.parse('foo[0]=1&foo[1]=2&foo[3]=3', {arrayFormat: 'index'});
+		parse('foo[0]=1&foo[1]=2&foo[3]=3', {arrayFormat: 'index'});
 		//=> {foo: ['1', '2', '3']}
 		```
 
@@ -32,7 +32,7 @@ export interface ParseOptions {
 		```
 		import queryString = require('query-string');
 
-		queryString.parse('foo=1,2,3', {arrayFormat: 'comma'});
+		parse('foo=1,2,3', {arrayFormat: 'comma'});
 		//=> {foo: ['1', '2', '3']}
 		```
 
@@ -41,7 +41,7 @@ export interface ParseOptions {
 		```
 		import queryString = require('query-string');
 
-		queryString.parse('foo=1|2|3', {arrayFormat: 'separator', arrayFormatSeparator: '|'});
+		parse('foo=1|2|3', {arrayFormat: 'separator', arrayFormatSeparator: '|'});
 		//=> {foo: ['1', '2', '3']}
 		```
 
@@ -50,7 +50,7 @@ export interface ParseOptions {
 		```
 		import queryString = require('query-string');
 
-		queryString.parse('foo=1&foo=2&foo=3');
+		parse('foo=1&foo=2&foo=3');
 		//=> {foo: ['1', '2', '3']}
 		```
 	*/
@@ -76,7 +76,7 @@ export interface ParseOptions {
 
 	const order = ['c', 'a', 'b'];
 
-	queryString.parse('?a=one&b=two&c=three', {
+	parse('?a=one&b=two&c=three', {
 		sort: (itemLeft, itemRight) => order.indexOf(itemLeft) - order.indexOf(itemRight)
 	});
 	//=> {c: 'three', a: 'one', b: 'two'}
@@ -86,7 +86,7 @@ export interface ParseOptions {
 	```
 	import queryString = require('query-string');
 
-	queryString.parse('?a=one&c=three&b=two', {sort: false});
+	parse('?a=one&c=three&b=two', {sort: false});
 	//=> {a: 'one', c: 'three', b: 'two'}
 	```
 	*/
@@ -101,7 +101,7 @@ export interface ParseOptions {
 	```
 	import queryString = require('query-string');
 
-	queryString.parse('foo=1', {parseNumbers: true});
+	parse('foo=1', {parseNumbers: true});
 	//=> {foo: 1}
 	```
 	*/
@@ -116,7 +116,7 @@ export interface ParseOptions {
 	```
 	import queryString = require('query-string');
 
-	queryString.parse('foo=true', {parseBooleans: true});
+	parse('foo=true', {parseBooleans: true});
 	//=> {foo: true}
 	```
 	*/
@@ -153,7 +153,7 @@ Extract the URL and the query string as an object.
 ```
 import queryString = require('query-string');
 
-queryString.parseUrl('https://foo.bar?foo=bar');
+parseUrl('https://foo.bar?foo=bar');
 //=> {url: 'https://foo.bar', query: {foo: 'bar'}}
 ```
 */
@@ -182,7 +182,7 @@ export interface StringifyOptions {
 		```
 		import queryString = require('query-string');
 
-		queryString.stringify({foo: [1, 2, 3]}, {arrayFormat: 'bracket'});
+		stringify({foo: [1, 2, 3]}, {arrayFormat: 'bracket'});
 		//=> 'foo[]=1&foo[]=2&foo[]=3'
 		```
 
@@ -191,7 +191,7 @@ export interface StringifyOptions {
 		```
 		import queryString = require('query-string');
 
-		queryString.stringify({foo: [1, 2, 3]}, {arrayFormat: 'index'});
+		stringify({foo: [1, 2, 3]}, {arrayFormat: 'index'});
 		//=> 'foo[0]=1&foo[1]=2&foo[2]=3'
 		```
 
@@ -200,7 +200,7 @@ export interface StringifyOptions {
 		```
 		import queryString = require('query-string');
 
-		queryString.stringify({foo: [1, 2, 3]}, {arrayFormat: 'comma'});
+		stringify({foo: [1, 2, 3]}, {arrayFormat: 'comma'});
 		//=> 'foo=1,2,3'
 		```
 
@@ -209,7 +209,7 @@ export interface StringifyOptions {
 		```
 		import queryString = require('query-string');
 
-		queryString.stringify({foo: [1, 2, 3]}, {arrayFormat: 'separator', arrayFormatSeparator: '|'});
+		stringify({foo: [1, 2, 3]}, {arrayFormat: 'separator', arrayFormatSeparator: '|'});
 		//=> 'foo=1|2|3'
 		```
 
@@ -218,7 +218,7 @@ export interface StringifyOptions {
 		```
 		import queryString = require('query-string');
 
-		queryString.stringify({foo: [1, 2, 3]});
+		stringify({foo: [1, 2, 3]});
 		//=> 'foo=1&foo=2&foo=3'
 		```
 	*/
@@ -244,7 +244,7 @@ export interface StringifyOptions {
 
 	const order = ['c', 'a', 'b'];
 
-	queryString.stringify({a: 1, b: 2, c: 3}, {
+	stringify({a: 1, b: 2, c: 3}, {
 		sort: (itemLeft, itemRight) => order.indexOf(itemLeft) - order.indexOf(itemRight)
 	});
 	//=> 'c=3&a=1&b=2'
@@ -254,7 +254,7 @@ export interface StringifyOptions {
 	```
 	import queryString = require('query-string');
 
-	queryString.stringify({b: 1, c: 2, a: 3}, {sort: false});
+	stringify({b: 1, c: 2, a: 3}, {sort: false});
 	//=> 'b=1&c=2&a=3'
 	```
 	*/
@@ -271,12 +271,12 @@ export interface StringifyOptions {
 	```
 	import queryString = require('query-string');
 
-	queryString.stringify({a: 1, b: undefined, c: null, d: 4}, {
+	stringify({a: 1, b: undefined, c: null, d: 4}, {
 		skipNull: true
 	});
 	//=> 'a=1&d=4'
 
-	queryString.stringify({a: undefined, b: null}, {
+	stringify({a: undefined, b: null}, {
 		skipNull: true
 	});
 	//=> ''
@@ -307,10 +307,10 @@ Query items in the `query` property overrides queries in the `url` property.
 
 @example
 ```
-queryString.stringifyUrl({url: 'https://foo.bar', query: {foo: 'bar'}});
+stringifyUrl({url: 'https://foo.bar', query: {foo: 'bar'}});
 //=> 'https://foo.bar?foo=bar'
 
-queryString.stringifyUrl({url: 'https://foo.bar?foo=baz', query: {foo: 'bar'}});
+stringifyUrl({url: 'https://foo.bar?foo=baz', query: {foo: 'bar'}});
 //=> 'https://foo.bar?foo=bar'
 ```
 */
