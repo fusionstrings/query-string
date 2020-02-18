@@ -2,7 +2,7 @@
 	"name": "@fusionstrings/query-string",
 	"version": "1.1.1",
 	"main": "index.cjs",
-	"module": "index.js",
+	"module": "dist/index.js",
 	"exports": {
 		"import": "./index.js",
 		"require": "./index.cjs"
@@ -27,7 +27,8 @@
 		"index.cjs",
 		"index.js",
 		"index.d.ts",
-		"strict-uri-encode.js"
+		"strict-uri-encode.js",
+		"dist"
 	],
 	"keywords": [
 		"ESM",
