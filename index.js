@@ -1,6 +1,6 @@
-import strictUriEncode from 'strict-uri-encode';
 import decodeComponent from 'decode-uri-component';
 import splitOnFirst from 'split-on-first';
+import strictUriEncode from './strict-uri-encode.js';
 
 function encoderForArrayFormat(options) {
 	switch (options.arrayFormat) {
